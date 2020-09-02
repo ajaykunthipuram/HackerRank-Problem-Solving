@@ -1,0 +1,64 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+    static int getRoot(int[] map,int index){
+        if(map[index]<0) return index;
+        else return getRoot(map,map[index]);
+    }
+
+    private static final Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args){
+        int t=sc.nextInt();
+        while(t-->0){
+            int n=sc.nextInt();
+            int m=sc.nextInt();
+            long cl=sc.nextLong();
+            long cr=sc.nextLong();
+            int map[]=new int[n];
+            Arrays.fill(map,-1);
+            for(int i=0;i<m;i++){
+                int c1=sc.nextInt()-1;
+                int c2=sc.nextInt()-1;
+                int r1=getRoot(map,c1);
+                int r2=getRoot(map,c2);
+                if(r1!=r2){
+                    if(r1<r2){
+                        map[r1]=map[r1]+map[r2];
+                        map[r2]=r1;
+                    }
+                    else{
+                        map[r2]=map[r1]+map[r2];
+                        map[r1]=r2;
+                    }
+                }
+            }
+            Queue<Integer> q=new LinkedList<>();
+            for(int i=0;i<n;i++){
+                if(map[i]<0){
+                    q.add(map[i]);
+                }
+            }
+            if(cl>cr){
+                long sum=0;
+                while(!q.isEmpty()){
+                    sum+=(((int)q.poll()+1)*cr-cl);
+                }
+                System.out.println(-sum);
+            }
+            else{
+                long sum=0;
+                while(!q.isEmpty()){
+                    sum+=(q.poll()*cl);
+                }
+                System.out.println(-sum);
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the countSort function below.
+    static void countSort(List<List<String>> arr) {
+        HashMap<String,ArrayList<String>> h=new HashMap<String,ArrayList<String>>();
+        int n=arr.size();
+        for(int i=0;i<n;i++){
+            if(!h.containsKey(arr.get(i).get(0))){
+                if(i<=n/2){
+                    ArrayList<String> l=new ArrayList<>();
+                    l.add("-");
+                    h.put(arr.get(i).get(0),l);
+                }
+                else{
+                    ArrayList<String> l=new ArrayList<>();
+                    l.add(arr.get(i).get(1));
+                    h.put(arr.get(i).get(0),l);
+                }
+            }
+            else{
+                if(i<=n/2){
+                    ArrayList<String> l=new ArrayList<>();
+                    l=h.get(arr.get(i).get(0));
+                    l.add("-");
+                    h.put(arr.get(i).get(0),l);
+                }
+                else{
+                    ArrayList<String> l=new ArrayList<>();
+                    l=h.get(arr.get(i).get(0));
+                    l.add(arr.get(i).get(1));
+                    h.put(arr.get(i).get(0),l);
+                }
+            }
+        }
+        TreeMap<String,ArrayList<String>> t=new TreeMap<String,ArrayList<String>>(h);
+        for(Map.Entry m:t.entrySet()){
+            for(String s:(String)m.getValue()){
+                System.out.print(s+" ");
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<String>> arr = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            arr.add(Arrays.asList(bufferedReader.readLine().replaceAll("\\s+$", "").split(" ")));
+        }
+
+        countSort(arr);
+
+        bufferedReader.close();
+    }
+}

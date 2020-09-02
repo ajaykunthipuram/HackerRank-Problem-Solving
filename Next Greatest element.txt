@@ -1,0 +1,79 @@
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+	public static void main (String[] args) {
+		//code
+		Scanner sc=new Scanner(System.in);
+		int t1=sc.nextInt();
+		while(t1-->0){
+		    String s=Integer.toString(sc.nextInt());
+		    ArrayList<Character> a=new ArrayList<>();
+		    int n=s.length();
+		    for(int i=0;i<n;i++){
+		        a.add(s.charAt(i));
+		    }
+		    int flag=0;
+		    Collections.sort(a);
+		    int index1=-1,index2=-1;
+		    //int e1=(int)s.charAt(i);
+		    //int e2=0;
+		    String res="";
+		    int l=a.size();
+		    char pre=0;
+		    for(int i=n-1;i>-1;i--){
+		        if(s.charAt(i)>a.get(0)){
+		            pre=s.charAt(i);
+		            index2=i;break;
+		        }
+		    }
+		    if(index2==-1||index2==0){
+		        System.out.println("not possible");flag=-1;
+		    }
+		    char pre2=0;
+		    int index3=0;
+		    for(int i=index2-1;i>-1&&flag==0;i--){
+		        if(s.charAt(i)>=pre){
+		            pre=s.charAt(i);
+		            index2=i;
+		            continue;
+		        }
+		        else{
+		            flag=1;
+		            index1=i;
+		            for(int j=n-1;j>index2;j--){
+		                if(s.charAt(j)>s.charAt(i)){
+		                    index2=j;break;
+		                }
+		            }
+		            res=swap(s,index1,index2);break;
+		        }
+		    }
+		    if(flag==1)System.out.println(res);
+		    else if(flag==0)System.out.println("not possible");
+		}
+	}
+	public static String swap(String in,int i1,int i2){
+	    String s="";
+	    for(int i=0;i<i1;i++){
+	        s+=in.charAt(i);
+	    }
+	    s+=in.charAt(i2);
+	    int n=in.length();
+	    ArrayList<Character> a=new ArrayList<>();
+	    for(int i=i1+1;i<n;i++){
+	        if(i!=i2){
+	            a.add(in.charAt(i));
+	        }
+	    }
+	    a.add(in.charAt(i1));
+	    Collections.sort(a);
+	    while(!a.isEmpty()){
+	        s+=(a.remove(0));
+	    }
+	    return s;
+	}
+}

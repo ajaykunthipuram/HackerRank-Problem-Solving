@@ -1,0 +1,110 @@
+static int[] climbingLeaderboard(int[] scores, int[] alice) {
+	int n=scores.length;
+        int n1=alice.length;
+        int result[]=new int[n1];
+        ArrayList<Integer>a=new ArrayList<Integer>();
+        for(int i1=0;i1<n;i1++){
+            if(!a.contains(scores[i1])) a.add(scores[i1]);
+        }
+        for(int i=a.size()-1,j=0;i>-1&&j<n1;){
+            if(alice[j]<a.get(i)){
+                result[j]=i+2;j++;
+            }
+            else if(alice[j]>=a.get(i)&&i>0){
+                i--;
+            }
+            else if(alice[j]>=a.get(i)&&i==0){
+                result[j]=1;j++;
+            }
+        }
+        //System.out.println(a);
+        return result;
+}
+
+import static java.util.Arrays.binarySearch;
+import static java.util.stream.IntStream.range;
+
+public static int[] climbingLeaderboard(int[] scores, int[] alice) {
+    int n=scores.length;
+    int[] result=new int[alice.length];
+    int[] array = range(0,n).map(i->scores[n-i-1]).distinct().toArray();
+    int index = 0;
+    int i=0;
+    for(int score: alice) {
+        index = binarySearch(array, index<0?0:index, array.length, score);
+        if(index<0) index=-index-2;
+        result[i]=array.length-index;i++;
+    }
+    return result;
+} 
+
+editorial :
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define READ(f) freopen(f, "r", stdin)
+#define WRITE(f) freopen(f, "w", stdout)
+
+#define mx 200000
+int s[mx + 1];
+int rank[mx + 1];
+int a[mx + 1];
+void build_rank(int n){
+    for (int i=0;i<n;i++) {
+        if (i==0) {
+            rank[i] = 1;
+        }
+        else {
+            if (s[i] == s[i-1]) {
+                rank[i] = rank[i - 1];
+            }
+            else {
+                rank[i] = rank[i - 1] + 1 ;
+            }
+        }
+    }
+}
+
+int main(){
+
+    int n;
+    cin >> n;
+    
+    for(int i = 0; i < n; i++) {
+        cin >> s[i];
+    }
+    build_rank(n);
+    
+
+    int m;
+    int point = n;
+    cin >> m;
+    for (int j = 0; j < m; j++) {
+        cin >> a[j];
+    }
+    
+    for(int j = 0; j < m; j++) {
+        
+        int current_rank;
+    
+        while (point >= 0 and a[j] > s[point]) {
+            point--;
+        }
+        
+        if (point == -1) {
+            current_rank = 1;
+        }
+        else if (a[j] == s[point]) {
+            current_rank = rank[point];
+        }
+        else if (a[j] < s[point]) {
+            current_rank = rank[point] + 1;
+        }
+        
+        cout << current_rank << endl;
+    }
+    
+    return 0;
+}

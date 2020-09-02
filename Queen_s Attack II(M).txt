@@ -1,0 +1,95 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the queensAttack function below.
+    static int queensAttack(int n, int k, int r_q, int c_q, int[][] obstacles) {
+        int count=0;
+        int r=r_q,q=c_q;
+        int no=0,s=0,e=0,w=0,ne=0,se=0,sw=0,nw=0;
+        no=n-r;s=r-1;e=n-q;w=q-1;
+        sw=Math.min(Math.abs(1-r),Math.abs(1-q));
+        se=Math.min(Math.abs(1-r),Math.abs(n-q));
+        nw=Math.min(Math.abs(n-r),Math.abs(1-q));
+        ne=Math.min(Math.abs(n-r),Math.abs(n-q));
+        for(int i=0;i<obstacles.length;i++){
+            int x1=obstacles[i][0];
+            int y1=obstacles[i][1];
+            if(x1==r&&q<y1){
+                e=Math.min(y1-q-1,e);continue;
+            }
+            else if(x1==r&&q>y1){
+                w=Math.min(q-y1-1,w);continue;
+            }
+            if(y1==q&&r<x1){
+                no=Math.min(x1-r-1,no);continue;
+            }
+            else if(y1==q&&r>x1){
+                s=Math.min(r-x1-1,s);continue;
+            }
+            if(Math.abs(x1-r)==Math.abs(y1-q)){
+                if(x1>r&&y1>q){
+                    ne=Math.min(ne,(Math.abs(x1-r))-1);continue;
+                }
+                else if(x1>r&&y1<q){
+                    nw=Math.min(nw,(Math.abs(x1-r))-1);continue;
+                }
+                else if(x1<r&&y1<q){
+                    sw=Math.min(sw,(Math.abs(x1-r))-1);continue;
+                }
+                else if(x1<r&&y1>q){
+                    se=Math.min(se,(Math.abs(x1-r))-1);continue;
+                }
+            }
+
+        }
+        //System.out.println(no+" "+s+" "+e+" "+w+" "+sw+" "+se+" "+nw+" "+ne);
+        count=no+s+e+w+sw+se+nw+ne;
+        return count;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] nk = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nk[0]);
+
+        int k = Integer.parseInt(nk[1]);
+
+        String[] r_qC_q = scanner.nextLine().split(" ");
+
+        int r_q = Integer.parseInt(r_qC_q[0]);
+
+        int c_q = Integer.parseInt(r_qC_q[1]);
+
+        int[][] obstacles = new int[k][2];
+
+        for (int i = 0; i < k; i++) {
+            String[] obstaclesRowItems = scanner.nextLine().split(" ");
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+            for (int j = 0; j < 2; j++) {
+                int obstaclesItem = Integer.parseInt(obstaclesRowItems[j]);
+                obstacles[i][j] = obstaclesItem;
+            }
+        }
+
+        int result = queensAttack(n, k, r_q, c_q, obstacles);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}

@@ -1,0 +1,68 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the sherlockAndAnagrams function below.
+    static int sherlockAndAnagrams(String s) {
+        int count=0;
+        Map<String,Integer> m=new HashMap<String,Integer>();
+        int n=s.length();
+        int l=1;
+        for(int i=0;i<n-l+1&&l!=n;i++){
+            //System.out.println(s.substring(i,i+l));
+            String temp=getString(s.substring(i,i+l));
+            if(!m.containsKey(temp)) m.put(temp,1);
+            else if(m.containsKey(temp)) {
+                count=m.get(temp);
+                count++;
+                m.put(temp,count);
+            }
+            if(i+l>=n){
+                i=-1;l++;
+                System.out.println("Hi");
+            }
+        }
+        //System.out.println(m);
+        count=0;
+        for(Map.Entry m1:m.entrySet()){
+            int q=(int)m1.getValue();
+            count+=(q*(q-1))/2;
+        }
+        //System.out.println(count);
+        return count;
+
+    }
+    public static String getString(String s1){
+        char t[]=s1.toCharArray();
+        Arrays.sort(t);
+        return new String(t);
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int q = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int qItr = 0; qItr < q; qItr++) {
+            String s = scanner.nextLine();
+
+            int result = sherlockAndAnagrams(s);
+
+            bufferedWriter.write(String.valueOf(result));
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}

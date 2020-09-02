@@ -1,0 +1,68 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+    private static final Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        int q=scanner.nextInt();
+        for(int i1=0;i1<q;i1++){
+            int n=scanner.nextInt();
+            int m=scanner.nextInt();
+            LinkedList<Integer> adj[]=new LinkedList[n+1];
+            for(int i=0;i<n+1;i++) 
+                adj[i]=new LinkedList();
+            for(int i=0;i<m;i++){
+                int u=scanner.nextInt();
+                int v=scanner.nextInt();
+                adj[u].add(v);
+                adj[v].add(u);
+            }
+            int s=scanner.nextInt();
+            int s1=s;
+            int depth[]=new int[n+1];
+            boolean visited[]=new boolean[n+1];
+            Queue<Integer> queue=new LinkedList<Integer>();
+            visited[s]=true;
+            depth[s]=0;
+            queue.add(s);
+            while(queue.size()!=0){
+                s=queue.poll();
+                Iterator<Integer>i=adj[s].listIterator();
+                while(i.hasNext()){
+                    int n1=i.next();
+                        if(!visited[n1]&&depth[n1]==0){
+                            visited[n1]=true;
+                            queue.add(n1);
+                            depth[n1]=depth[s]+1;
+                        }
+                }
+            }
+            int j=0;
+            int res[]=new int[n-1];
+            for(int i=1;i<n+1;i++){
+                if(depth[i]==0&&i==s1) continue;
+                else if(depth[i]==0) {
+                    res[j]=-1;
+                    j++;
+                }
+                else{
+                    res[j]=depth[i]*6;
+                    j++;
+                }
+            }
+            int ss=res.length;
+            for(int i=0;i<ss;i++){
+                System.out.print(res[i]+" ");
+            }
+            System.out.println();
+                
+        }
+    }
+}
+
+

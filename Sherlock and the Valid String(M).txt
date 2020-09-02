@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Complete the isValid function below.
+string isValid(string s) {
+    if(s.length()==0) return "NO";
+    if(s.length()<=3) return "YES";
+    int c[26];
+    for(int i=0;i<26;i++) c[i]=0;
+    long max=0,min=100009;
+    for(int i=0;i<s.length();i++){
+        int r=(int)s[i]-97;
+        c[r]++;
+    }
+    int n=26;
+    sort(c,c+n);
+    int index;
+    for(int i=0;i<26;i++){
+        if(c[i]!=0){
+            min=c[i];
+            index=i;break;
+        }
+    }
+    max=c[25];
+    if(min==max) return "YES";
+    if(index==25) return "YES";
+    if(c[index+1]==max &&c[index]==1) return "YES";
+    if(c[25]==max&&c[24]==min&&max-min==1) return "YES";
+    return "NO";
+    /*for(int i=0;i<26;i++){
+        if(c[i]!=0&&c[i]<min)  min=c[i];
+    }
+    long m1=0,m2=0,m3=0;
+    for(int i=0;i<26;i++){
+        if(c[i]==min) m1++;
+        else if(c[i]==max) m2++;
+        else if(c[i]!=0) m3++;
+    }
+    for(int i=0;i<26;i++) cout<<c[i]<<" ";
+    cout<<min<<" "<<max<<" "<<m3;
+    if(m1!=0&&m2!=0&&m3!=0) return "NO";
+    if(max==min || (m1!=0&&m2==1) ||(m2!=0&&m1==1)) return "YES";
+    return "NO";*/
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string s;
+    getline(cin, s);
+
+    string result = isValid(s);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}

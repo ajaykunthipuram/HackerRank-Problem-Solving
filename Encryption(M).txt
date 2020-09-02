@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Complete the encryption function below.
+string encryption(string s) {
+    string s1="";
+    int len=s.size();
+    float l=sqrt(len);
+    int l2=(int)l;
+    int r=0,c=0;
+    if(l-(float)l2 > 0){
+        r=l2;
+        c=l2+1;
+        if(r*c<len){
+            r++;
+        }
+    }
+    else{
+        r=c=l2;
+    }
+    cout<<r<<" "<<c<<endl;
+
+    for(int i=0;i<s.length();i++){
+        if(s[i]==' ') continue;
+        s1+=s[i];
+    }
+    //cout<<s1;
+    string s2="";
+    for(int i=0;i<c;i++){
+        for(int j=i;j<s1.size();j=j+c){
+            s2+=s1[j];
+            cout<<s1[j];
+        }
+        s2+=" ";
+        cout<<" ";
+    }
+    return s2;
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string s;
+    getline(cin, s);
+
+    string result = encryption(s);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}

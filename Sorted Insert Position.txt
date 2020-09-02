@@ -1,0 +1,24 @@
+public class Solution {
+	public int searchInsert(ArrayList<Integer> a, int b) {
+	    return binarySearch(a,0,a.size()-1,b);
+	}
+	int pos;
+	int binarySearch(ArrayList<Integer> arr, int l, int r, int x){ 
+    if (r >= l) { 
+        int mid = l + (r - l) / 2; 
+        if (arr.get(mid) == x) {
+            return mid;
+        }
+        else if (arr.get(mid) > x) {
+            pos =mid;
+            return binarySearch(arr, l, mid - 1, x); 
+        }
+        else{
+            pos=mid+1;
+            return binarySearch(arr, mid + 1, r, x); 
+        }
+        
+    } 
+    return pos; 
+} 
+}

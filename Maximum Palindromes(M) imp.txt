@@ -1,0 +1,76 @@
+using namespace std;
+# define M 1000000007
+
+//this power function is uses to find modular multiplicative inverse
+//as M is prime so MMI=x^(M-2);
+ long long int power( long long int x,  long long int y, long long int m) 
+{ 
+    if (y == 0) 
+        return 1; 
+    long long int p = power(x, y / 2, m) % m; 
+    p = (p * p) % m; 
+  
+    return (y % 2 == 0) ? p : (x * p) % m; 
+} 
+
+
+
+ int main()
+{
+  string s;
+  cin>>s;
+   int q;
+  cin>>q;
+  int n=s.length();
+  
+
+  // pre-computing factorial and modular multiplicative inverse
+  long long int fact[n+1],mmi[n+1];
+  fact[0]=1;
+  mmi[0]=1;
+  for(int i=1;i<=n;i++)
+  { fact[i]=(fact[i-1]*i)%M;
+    mmi[i]=power(fact[i],M-2,M);
+  }
+   
+   
+   //pre-computing frequency of alphabets using 1 based index as asked in question
+    int cnt[n+1][26];
+   memset(cnt, 0, sizeof(cnt));
+   for(int i=1;i<=n;i++)
+    {
+         cnt[i][s[i-1]-'a']++; 
+    }
+   for(int i=2;i<=n;i++)
+   {
+       for(int j=0;j<26;j++)
+       {
+           cnt[i][j]+=cnt[i-1][j];
+       }
+   }  
+  
+  
+  for(int i=0;i<q;i++)
+  {
+      int l,r;
+      cin>>l>>r;
+     int even=0,odd=0;
+      long long int den=1,num=0;//num=numerator,den=denominator
+      for(int it=0;it<26;it++)
+        {    int value=cnt[r][it]-cnt[l-1][it];
+            if(value%2!=0)
+             odd++;
+            even+=value/2;
+            den=(den*mmi[value/2])%M;//storing MMI values
+
+        }
+       
+      num=fact[even];
+       long long int ans=(num*den)%M;
+       if(odd!=0)
+       {
+           ans=(ans*odd)%M;
+       }
+       cout<<ans<<endl;
+  }
+}    

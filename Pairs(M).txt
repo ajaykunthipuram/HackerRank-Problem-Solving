@@ -1,0 +1,20 @@
+n1=list(map(int,input().strip().split()))
+numbers=list(map(int,input().strip().split()))
+target=n1[1]
+numbers.sort()
+#print(numbers)
+n=n1[0]
+#print(n1[0],n1[1])
+count=0
+i=0
+j=1
+while j<n:
+    diff=numbers[j]-numbers[i]
+    if diff==target:
+        count+=1
+        j+=1
+    elif diff>target:
+        i+=1
+    else:
+        j+=1
+print(count)
